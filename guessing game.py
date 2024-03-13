@@ -2,15 +2,18 @@ import random
 import tkinter as tk
 from tkinter import messagebox
 
+high_score = float('inf')
+
 def start_game():
     global secret_number, attempts
     secret_number = random.randint(1, 100)
     attempts = 0
     guess_entry.delete(0, tk.END)
     result_label.config(text="")
+    high_score_label.config(text=f"High Score: {high_score}")
 
 def check_guess():
-    global attempts
+    global attempts, high_score
     guess = int(guess_entry.get())
     attempts += 1
 
@@ -19,7 +22,9 @@ def check_guess():
     elif guess > secret_number:
         result_label.config(text="Too high! Try again.")
     else:
+        high_score = min(high_score, attempts)
         messagebox.showinfo("Congratulations!", f"You guessed the number {secret_number} in {attempts} attempts.")
+        high_score_label.config(text=f"High Score: {high_score}")
         start_game()
 
 # Create the main window
@@ -45,6 +50,9 @@ check_button.pack(pady=5)
 # Create the result label
 result_label = tk.Label(game_frame, font=("Arial", 12), fg="green")
 result_label.pack(pady=10)
+
+high_score_label = tk.Label(game_frame, font=("Arial", 12), fg="blue")
+high_score_label.pack(pady=10)
 
 # Start the main event loop
 root.mainloop()
