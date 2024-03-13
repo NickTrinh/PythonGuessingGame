@@ -1,16 +1,19 @@
 import random
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 
+#init high_score
 high_score = float('inf')
 
 def start_game():
-    global secret_number, attempts
-    secret_number = random.randint(1, 100)
-    attempts = 0
-    guess_entry.delete(0, tk.END)
-    result_label.config(text="")
-    high_score_label.config(text=f"High Score: {high_score}")
+    global secret_number, attempts, high_score
+    range_prompt = simpledialog.askinteger("Range","Enter the maximum value for the secret number:", parent=root, minvalue=1, initialvalue=100)
+    if range_prompt:
+        secret_number = random.randint(1, range_prompt)
+        attempts = 0
+        guess_entry.delete(0, tk.END)
+        result_label.config(text="")
+        high_score_label.config(text=f"High Score: {high_score}")
 
 def check_guess():
     global attempts, high_score
